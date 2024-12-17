@@ -45,9 +45,35 @@ class healthstatistics(db.Model):
 
     def __repr__(self):
         return f"<HealthStatistics {self.Country}, {self.Disease_Name}>"
+    
+# Define the CardiovascularData model
+class cardio(db.Model):
+    __tablename__='cardiovasculardata'
+
+    # columns
+    id = db.Column(db.Integer, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    gender = db.Column(db.Integer, nullable=False)
+    height = db.Column(db.Integer, nullable=False)
+    weight = db.Column(db.Float, nullable=False)
+    ap_hi = db.Column(db.Integer, nullable=False)
+    ap_lo = db.Column(db.Integer, nullable=False)
+    cholesteral = db.Column(db.Integer, nullable=False)
+    gluc = db.Column(db.Integer, nullable=False)
+    smoke = db.Column(db.Integer, nullable=False)
+    alco = db.Column(db.Integer, nullable=False)
+    active = db.Column(db.Integer, nullable=False)
+    cardio = db.Column(db.Integer, nullable=False)
+    age_years = db.Column(db.Integer, nullable=False)
+    bmi = db.Column(db.Float, nullable=False)
+    bp_category = db.Column(db.Integer, nullable=False)
+    bp_category_encoded = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f"<CardiovascularData {self.id}, {self.age}>"
 
 # Route to display all records
-@app.route('/data')
+@app.route('/healthstatistics_data')
 def show_data():
     records = healthstatistics.query.limit(100).all()
     data = [
@@ -86,3 +112,37 @@ with app.app_context():
 if __name__ == '__main__':
     app.run(debug=True)
 
+@app.route('/cardiovascular_data')
+def show_data():    
+
+    records = cardio.query.limit(100).all()
+    data = [
+        {
+            'id': record.id,
+            'age': record.age,
+            'gender': record.gender,
+            'height':record.height,
+            'weight':record.weight,
+            'ap_hi':record.ap_hi,
+            'ap_lo': record.ap_lo,
+            'cholesteral': record.cholesteral,
+            'gluc': record.gluc,
+            'smoke': reocrd.smoke,
+            'alco': record.alco,
+            'active':record.active,
+            'cardio':record.cardio,
+            'age_years':record.age_years,
+            'bmi':record.bmi,
+            'bp_category':record.bp_category,
+            'bp_category_encoded':record.bp_category,
+            }
+            for record in records
+    ]
+    return jsonify(data)
+
+# Create the database tables
+with app.app_context():
+    db.create_all()
+
+if __name__ == '__main__':
+    app.run(debug=True)
