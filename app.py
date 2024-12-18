@@ -98,7 +98,7 @@ class cardio(db.Model):
 @app.route('/healthstatistics_data', methods=["GET"])
 @cross_origin()
 def show_healthstats_data():
-    records = healthstatistics.query.limit(100).all()
+    records = healthstatistics.query.all()
     data = [
         {
             "Country": record.country,
@@ -136,7 +136,7 @@ with app.app_context():
 @app.route('/cardiovascular_data', methods=["GET"])
 @cross_origin()
 def show_cardio_data():    
-    records2 = cardio.query.limit(100).all()
+    records2 = cardio.query.all()
     data2 = [
         {
             'id': record2.id,
