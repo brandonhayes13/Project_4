@@ -1,6 +1,13 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
+import sys
+
+# adding Folder_2/subfolder to the system path
+sys.path.insert(0, r"C:\Users\mrybi\Documents")
+
+# importing the hello
+from config import password
 
 app = Flask(__name__)
 
@@ -15,7 +22,7 @@ app.config['CORS_ORIGINS'] = '*'
 
 app.config['DEBUG'] = True
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:#Nimitz1942@localhost:5432/project4'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:{password}@localhost:5432/project4'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
