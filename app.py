@@ -1,9 +1,28 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS, cross_origin
+import sys
+
+# adding Folder_2/subfolder to the system path
+sys.path.insert(0, r"C:\Users\mrybi\Documents")
+
+# importing the hello
+from config import password
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/project4'
+CORS(app, resources={
+    r"/*": {
+        "origins": "*"
+    }
+})
+
+app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['CORS_ORIGINS'] = '*'
+
+app.config['DEBUG'] = True
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:{password}@localhost:5432/project4'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -45,11 +64,41 @@ class healthstatistics(db.Model):
 
     def __repr__(self):
         return f"<HealthStatistics {self.Country}, {self.Disease_Name}>"
+    
+# Define the CardiovascularData model
+class cardio(db.Model):
+    __tablename__='cardiovasculardata'
+
+    # Add a primary key column
+    id_primary = db.Column(db.Integer, primary_key=True)
+
+    # columns
+    id = db.Column(db.Integer, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    gender = db.Column(db.Integer, nullable=False)
+    height = db.Column(db.Integer, nullable=False)
+    weight = db.Column(db.Float, nullable=False)
+    ap_hi = db.Column(db.Integer, nullable=False)
+    ap_lo = db.Column(db.Integer, nullable=False)
+    cholesterol = db.Column(db.Integer, nullable=False)
+    gluc = db.Column(db.Integer, nullable=False)
+    smoke = db.Column(db.Integer, nullable=False)
+    alco = db.Column(db.Integer, nullable=False)
+    active = db.Column(db.Integer, nullable=False)
+    cardio = db.Column(db.Integer, nullable=False)
+    age_years = db.Column(db.Integer, nullable=False)
+    bmi = db.Column(db.Float, nullable=False)
+    bp_category = db.Column(db.Integer, nullable=False)
+    bp_category_encoded = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f"<cardiovasculardata {self.id}, {self.age}>"
 
 # Route to display all records
-@app.route('/data')
-def show_data():
-    records = healthstatistics.query.limit(100).all()
+@app.route('/healthstatistics_data', methods=["GET"])
+@cross_origin()
+def show_healthstats_data():
+    records = healthstatistics.query.all()
     data = [
         {
             "Country": record.country,
@@ -83,6 +132,38 @@ def show_data():
 with app.app_context():
     db.create_all()
 
+
+@app.route('/cardiovascular_data', methods=["GET"])
+@cross_origin()
+def show_cardio_data():    
+    records2 = cardio.query.all()
+    data2 = [
+        {
+            'id': record2.id,
+            'age': record2.age,
+            'gender': record2.gender,
+            'height':record2.height,
+            'weight':record2.weight,
+            'ap_hi':record2.ap_hi,
+            'ap_lo': record2.ap_lo,
+            'cholesterol': record2.cholesterol,
+            'gluc': record2.gluc,
+            'smoke': record2.smoke,
+            'alco': record2.alco,
+            'active':record2.active,
+            'cardio':record2.cardio,
+            'age_years':record2.age_years,
+            'bmi':record2.bmi,
+            'bp_category':record2.bp_category,
+            'bp_category_encoded':record2.bp_category_encoded,
+            }
+            for record2 in records2
+    ]
+    return jsonify(data2)
+
+# Create the database tables
+with app.app_context():
+    db.create_all()
+
 if __name__ == '__main__':
     app.run(debug=True)
-

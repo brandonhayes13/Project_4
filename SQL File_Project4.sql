@@ -23,7 +23,29 @@ CREATE TABLE HealthStatistics (
     Urbanization_Rate DECIMAL(5, 2) -- percentage
 );
 
+CREATE TABLE CardioVascularData (
+id INT,
+age INT,
+gender INT,
+height INT,
+weight DECIMAL (5,2),
+ap_hi INT,
+ap_lo INT,
+cholesterol INT,
+gluc INT,
+smoke INT,
+alco INT,
+active INT,
+cardio INT,
+age_years INT,
+bmi DECIMAL (5, 2),
+bp_category VARCHAR(150),
+bp_category_encoded VARCHAR(150)
+);
+
 SELECT * FROM HealthStatistics;
+
+SELECT * FROM CardioVascularData;
 
 ALTER TABLE HealthStatistics
 ADD COLUMN id SERIAL PRIMARY KEY;
