@@ -55,9 +55,9 @@ Logistics Regression
 The second model that I used was a Logistics Regression model.  The solver I used was ‘lbfgs’, with max iterations at 1000, and a random state of 78.  The accuracy scored out at 0.72542
 
 Tablea
-
+~~~
   https://public.tableau.com/views/Proyect_Hyper_4/Dashboard2?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link
-
+~~~
 Mock Data
 
 Working with the cardiovascular dataset, Numpy was used to set a random seed for reproducibility. Mock data was generated after listing categorical data. Data was organized into a dataframe and saved into a csv file in order to test our model
